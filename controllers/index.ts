@@ -26,17 +26,17 @@ const fetchProducts = async (id?: string) => {
 export const getAllProduct = async (req: Request, res: Response) => {
   try {
     const data = await fetchProducts();
-    return res.json(data);
+    res.json(data);
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const data = await fetchProducts(req.params.id);
-    return res.json(data);
+    res.json(data);
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
