@@ -1,5 +1,5 @@
 import express from "express";
-import compression from "compression";
+
 import cors from "cors";
 import productRourte from "./routes/index";
 import { requestLogger } from "./middlewares/logger";
@@ -30,7 +30,7 @@ const corsOptions: cors.CorsOptions = {
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(requestLogger);
-app.use(compression());
+
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
