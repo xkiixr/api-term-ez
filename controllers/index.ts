@@ -11,6 +11,7 @@ const fetchProducts = async (id?: string) => {
         },
       }
     );
+    console.time();
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data || "Failed to fetch products");
