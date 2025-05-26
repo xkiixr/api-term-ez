@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import axiosInstance from "../config/axios";
+import { getCache, setCache } from "../utils/cache";
 
 const fetchProducts = async (id?: string) => {
   try {
@@ -11,7 +12,7 @@ const fetchProducts = async (id?: string) => {
         },
       }
     );
-    console.time();
+
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data || "Failed to fetch products");
@@ -20,8 +21,17 @@ const fetchProducts = async (id?: string) => {
 
 export const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const data = await fetchProducts();
-    res.json(data);
+    const cacheKey = "products";
+    const cached = getCache(cacheKey);
+    if (cached) {
+      console.log("🔁 Returning cached data");
+
+      res.json(cached);
+    } else {
+      const data = await fetchProducts();
+      setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
+      res.json(data);
+    }
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -30,8 +40,16 @@ export const getAllProduct = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await fetchProducts(id);
-    res.json(data);
+    const cacheKey = id!;
+    const cached = getCache(cacheKey);
+    if (cached) {
+      console.log("🔁 Returning cached data");
+      res.json(cached);
+    } else {
+      const data = await fetchProducts();
+      setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
+      res.json(data);
+    }
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

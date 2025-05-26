@@ -1,6 +1,8 @@
 import express from "express";
+import compression from "compression";
 import cors from "cors";
 import productRourte from "./routes/index";
+import { requestLogger } from "./middlewares/logger";
 const allowedOrigins = [
   "http://localhost:3000",
   "https://www.onetop.la",
@@ -27,13 +29,13 @@ const corsOptions: cors.CorsOptions = {
 
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(cors(corsOptions));
+app.use(requestLogger);
+app.use(compression());
 app.use(express.json());
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", productRourte);
 app.use("/", (req, res) => {
-  console.log("Hello World");
-
   res.send("Welcome to the Product API");
 });
 app.listen(port, () => {
