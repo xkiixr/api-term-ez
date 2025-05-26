@@ -1,10 +1,33 @@
 import express from "express";
 import cors from "cors";
 import productRourte from "./routes/index";
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://www.onetop.la",
+  "https://onetop.la",
+  "https://www.term-ez.com",
+  "https://term-ez.com",
+];
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) {
+      // Allow non-browser clients like Postman
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true); // ✅ Allow
+    } else {
+      callback(new Error("Not allowed by CORS")); // ❌ Block
+    }
+  },
+  credentials: true,
+};
 
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", productRourte);
