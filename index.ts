@@ -30,7 +30,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
+app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(requestLogger);
 // app.use("/api", apiLimiter);
