@@ -47,7 +47,7 @@ export const getProductById = async (req: Request, res: Response) => {
       console.log("🔁 Returning cached data");
       res.json(cached);
     } else {
-      const data = await fetchProducts();
+      const data = await fetchProducts(id);
       setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
       res.json(data);
     }
