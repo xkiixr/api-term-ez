@@ -26,11 +26,11 @@ export const getAllProduct = async (req: Request, res: Response) => {
     if (cached) {
       console.log("🔁 Returning cached data");
 
-      res.json(cached);
+      res.status(200).json(cached);
     } else {
       const data = await fetchProducts();
       setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
-      res.json(data);
+      res.status(200).json(data);
     }
   } catch (error: any) {
     console.log("Error: ", error);
@@ -45,11 +45,11 @@ export const getProductById = async (req: Request, res: Response) => {
     const cached = getCache(cacheKey);
     if (cached) {
       console.log("🔁 Returning cached data");
-      res.json(cached);
+      res.status(200).json(cached);
     } else {
       const data = await fetchProducts(id);
       setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
-      res.json(data);
+      res.status(200).json(data);
     }
   } catch (error: any) {
     console.log("Error: ", error);
