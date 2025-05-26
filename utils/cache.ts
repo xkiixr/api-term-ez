@@ -1,21 +1,11 @@
-const cache = new Map<string, { data: any; expiry: number }>();
+import { LRUCache } from "lru-cache";
 
-function getCache(key: string) {
-  const cached = cache.get(key);
-  if (cached && Date.now() < cached.expiry) {
-    return cached.data;
-  }
-  return null;
-}
+const cache = new LRUCache<string, any>({
+  max: 100, // max 100 items
+  ttl: 1000 * 60 * 5, // 5 minutes
+});
 
-function setCache(key: string, data: any, ttl = 1000 * 60) {
-  cache.set(key, { data, expiry: Date.now() + ttl }); // 1 min by default
-}
-
-function clearCache(key: string) {
-  cache.delete(key);
-}
-function clearAllCache() {
-  cache.clear();
-}
-export { getCache, setCache, clearCache, clearAllCache };
+export const getCache = (key: string) => cache.get(key);
+export const setCache = (key: string, value: any, ttl?: number) => {
+  cache.set(key, value, { ttl });
+};

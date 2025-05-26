@@ -14,26 +14,24 @@ const allowedOrigins = [
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (!origin) {
-      // Allow non-browser clients like Postman
       return callback(null, true);
     }
 
     if (allowedOrigins.includes(origin)) {
-      callback(null, true); // ✅ Allow
+      callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS")); // ❌ Block
+      callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
 };
-
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(requestLogger);
 
-app.use(express.json());
-app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(requestLogger);
 app.use("/api", productRourte);
 app.use("/", (req, res) => {
   res.send("Welcome to the Product API");

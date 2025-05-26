@@ -3,57 +3,40 @@ import axiosInstance from "../config/axios";
 import { getCache, setCache } from "../utils/cache";
 
 const fetchProducts = async (id?: string) => {
-  try {
-    const response = await axiosInstance.get(
-      `/termgame/${process.env.INDENTIFY}/products/${id || ""}`,
-      {
-        headers: {
-          "agent-token": process.env.PASSWORD,
-        },
-      }
-    );
+  const url = `/termgame/${process.env.INDENTIFY}/products/${id || ""}`;
+  const cacheKey = `axios:${url}`;
 
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data || "Failed to fetch products");
+  const cached = getCache(cacheKey);
+  if (cached) {
+    console.log("🟡 Cache hit", url);
+    return cached;
   }
+
+  const { data } = await axiosInstance.get(url, {
+    headers: {
+      "agent-token": process.env.PASSWORD!,
+    },
+  });
+
+  setCache(cacheKey, data, 1000 * 60 * 5); // 5 min
+  console.log("🟢 Fetched fresh", url);
+  return data;
 };
 
 export const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const cacheKey = "products";
-    const cached = getCache(cacheKey);
-    if (cached) {
-      console.log("🔁 Returning cached data");
-
-      res.status(200).json(cached);
-    } else {
-      const data = await fetchProducts();
-      setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
-      res.status(200).json(data);
-    }
+    const data = await fetchProducts();
+    return res.json(data);
   } catch (error: any) {
-    console.log("Error: ", error);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    const cacheKey = id!;
-    const cached = getCache(cacheKey);
-    if (cached) {
-      console.log("🔁 Returning cached data");
-      res.status(200).json(cached);
-    } else {
-      const data = await fetchProducts(id);
-      setCache(cacheKey, data, 1000 * 60 * 5); // Cache for 5 minutes
-      res.status(200).json(data);
-    }
+    const data = await fetchProducts(req.params.id);
+    return res.json(data);
   } catch (error: any) {
-    console.log("Error: ", error);
-
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
