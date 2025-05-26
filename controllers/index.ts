@@ -33,6 +33,7 @@ export const getAllProduct = async (req: Request, res: Response) => {
       res.json(data);
     }
   } catch (error: any) {
+    console.log("Error: ", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -51,6 +52,8 @@ export const getProductById = async (req: Request, res: Response) => {
       res.json(data);
     }
   } catch (error: any) {
+    console.log("Error: ", error);
+
     res.status(500).json({ error: error.message });
   }
 };
