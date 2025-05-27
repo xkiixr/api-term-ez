@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/products", productRoute);
 app.use("/api/orders", orderRoute);
-app.use(notFound);
+// app.use(notFound);
 
 
 app.use("/", (req, res) => {
