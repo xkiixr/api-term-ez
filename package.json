@@ -1,27 +1,39 @@
 {
   "name": "api-term-ez",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/compression": "^1.8.0",
-    "@types/cors": "^2.8.18",
-    "@types/express": "^5.0.2"
-  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "bun run index.ts",
-    "dev": "bun --watch index.ts"
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "nodemon"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xkiixr/api-term-ez.git"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/xkiixr/api-term-ez/issues"
+  },
+  "homepage": "https://github.com/xkiixr/api-term-ez#readme",
   "dependencies": {
     "axios": "^1.9.0",
-    "compression": "^1.8.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "express-rate-limit": "^7.5.0",
-    "lru-cache": "^11.1.0"
+    "lru-cache": "^11.1.0",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.21",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
