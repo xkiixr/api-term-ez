@@ -50,7 +50,7 @@ const io = new Server(server, {
 initSocket(io);
 
 // ✅ Middleware and Routes
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
