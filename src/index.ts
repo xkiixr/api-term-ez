@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
-app.use("/api/products", productRoute);
+app.use("/api/products",limiter, productRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/payment", paymentRoute(io));
 
