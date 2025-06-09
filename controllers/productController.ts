@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
 import { fetchProducts } from "../api/product";
-import type { ApiResponse } from "../types/apiReponse";
+import type { ApiResponse } from "../types/apiResponse";
 
 export const getAllProduct = async (req: Request, res: Response) => {
   try {

@@ -1,11 +1,12 @@
 // controllers/paymentController.ts
 import type { Request, Response } from "express";
 import { Server } from "socket.io";
-import type { ApiResponse } from "../types/apiReponse";
+
 import generateSignature from "../utils/generateSignature";
 import axiosInstance from "../configs/axios";
 import { callCreateTransaction } from "../api/payment";
 import { json } from "stream/consumers";
+import type { ApiResponse } from "../types/apiResponse";
 
 export const handleCallBack =
   (io: Server) => async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import generateSignature from "../utils/generateSignature";
-import type { ApiResponse } from "../types/apiReponse";
+import type { ApiResponse } from "../types/apiResponse";
 
 const erorResponse: ApiResponse<any> = {
   message: "Invalid signature",
