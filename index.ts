@@ -1,14 +1,15 @@
 import express from "express";
 import cors from "cors";
-import productRoute from "./routes/productRoute";
-import orderRoute from "./routes/orderRoute";
+import productRoute from "./routes/product.route";
+import orderRoute from "./routes/orderRoute.route";
+import balanceRoute from "./routes/balance.route";
 
 import initSocket from "./socket";
 import logger from "./middlewares/logger";
 import { limiter } from "./utils/limiter";
 import { createSocketServer } from "./socket/io";
 import { notFound } from "./middlewares/not-found";
-import createPaymentRoute from "./routes/payment";
+import createPaymentRoute from "./routes/payment.route";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -22,6 +23,7 @@ app.use(logger);
 
 app.use("/api/products", limiter, productRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/balance", balanceRoute);
 app.use("/api/payment", createPaymentRoute(io));
 
 app.get("/", (req, res) => {

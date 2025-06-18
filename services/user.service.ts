@@ -1,8 +1,8 @@
 import axiosInstance from "../configs/axios";
 import { getCache, setCache } from "../utils/cache";
 
-const fetchOrder = async (id?: string) => {
-  const url = `/orders/`;
+export const getBalance = async (id?: string) => {
+  const url = `/get-balance`;
   const cacheKey = `axios:${url}`;
 
   const cached = getCache(cacheKey);
@@ -21,5 +21,3 @@ const fetchOrder = async (id?: string) => {
   console.log("🟢 Fetched fresh", url);
   return data;
 };
-
-export { fetchOrder };

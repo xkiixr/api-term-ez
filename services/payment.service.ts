@@ -1,7 +1,7 @@
 import axiosInstance from "../configs/axios";
 import type { TransactionPlayLoad } from "../types/transaction";
 
-const callCreateTransaction = async (playload: TransactionPlayLoad) => {
+export const createTransaction = async (playload: TransactionPlayLoad) => {
   try {
     const url = `/topup`;
     const { data, status } = await axiosInstance.post(url, playload, {
@@ -17,5 +17,3 @@ const callCreateTransaction = async (playload: TransactionPlayLoad) => {
     );
   }
 };
-
-export { callCreateTransaction };

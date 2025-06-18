@@ -1,7 +1,7 @@
 import axiosInstance from "../configs/axios";
 import { getCache, setCache } from "../utils/cache";
 
-const fetchProducts = async (id?: string) => {
+export const getProducts = async (id?: string) => {
   try {
     const url = `/products/${id || ""}`;
     const cacheKey = `axios:${url}`;
@@ -27,5 +27,3 @@ const fetchProducts = async (id?: string) => {
     );
   }
 };
-
-export { fetchProducts };

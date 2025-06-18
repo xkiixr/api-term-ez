@@ -1,12 +1,11 @@
 import type { Request, Response } from "express";
-
-import { fetchProducts } from "../api/product";
 import type { ApiResponse } from "../types/apiResponse";
+import * as productService from "../services/product.service";
 
 export const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const data = await fetchProducts();
-    res.json(data);
+    const data = await productService.getProducts();
+    res.status(200).json(data);
   } catch (error: any) {
     const erorResponse: ApiResponse<any> = {
       message: error.message,
@@ -20,8 +19,8 @@ export const getAllProduct = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const data = await fetchProducts(req.params.id);
-    res.json(data);
+    const data = await productService.getProducts(req.params.id);
+    res.status(200).json(data);
   } catch (error: any) {
     const erorResponse: ApiResponse<any> = {
       message: error.message,

@@ -1,12 +1,8 @@
 // controllers/paymentController.ts
 import type { Request, Response } from "express";
 import { Server } from "socket.io";
-
-import generateSignature from "../utils/generateSignature";
-import axiosInstance from "../configs/axios";
-import { callCreateTransaction } from "../api/payment";
-import { json } from "stream/consumers";
 import type { ApiResponse } from "../types/apiResponse";
+import * as paymentService from "../services/payment.service";
 
 export const handleCallBack =
   (io: Server) => async (req: Request, res: Response) => {
@@ -46,8 +42,8 @@ export const handleCallBack =
 
 export const createTransaction = async (req: Request, res: Response) => {
   try {
-    const data = await callCreateTransaction(req.body);
-    res.json(data);
+    const data = await paymentService.createTransaction(req.body);
+    res.status(200).json(data);
   } catch (error: any) {
     const erorResponse: ApiResponse<any> = {
       message: error.message,

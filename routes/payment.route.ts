@@ -1,10 +1,9 @@
-// routes/paymentRoute.ts
 import { Router } from "express";
 import { Server } from "socket.io";
 import {
   createTransaction,
   handleCallBack,
-} from "../controllers/paymentController";
+} from "../controllers/payment.controller";
 import validateSignature from "../middlewares/validateSignature";
 
 export default function createPaymentRoute(io: Server) {
