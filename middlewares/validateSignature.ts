@@ -2,11 +2,6 @@ import type { Request, Response, NextFunction } from "express";
 import generateSignature from "../utils/generateSignature";
 import type { ApiResponse } from "../types/apiResponse";
 
-const erorResponse: ApiResponse<any> = {
-  message: "Invalid signature",
-  status: "fail",
-  error: true,
-};
 export default function validateSignature(
   req: Request,
   res: Response,
@@ -14,16 +9,17 @@ export default function validateSignature(
 ) {
   try {
     const signature = generateSignature(req.body, process.env.SECRET_KEY!);
+    console.log(signature);
 
     if (
       !req.headers["x-signature"] ||
       req.headers["x-signature"] !== signature
     ) {
-      res.status(500).json(erorResponse);
+      throw new Error("Invalid signature");
     } else {
       next();
     }
   } catch (error) {
-    res.status(500).json(erorResponse);
+    throw new Error("Invalid signature");
   }
 }

@@ -1,4 +1,4 @@
-import axiosInstance from "../configs/axios";
+import axiosInstance from "../configs/axios.config";
 import { getCache, setCache } from "../utils/cache";
 
 export const getProducts = async (id?: string) => {

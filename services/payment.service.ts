@@ -1,4 +1,4 @@
-import axiosInstance from "../configs/axios";
+import axiosInstance from "../configs/axios.config";
 import type { TransactionPlayLoad } from "../types/transaction";
 
 export const createTransaction = async (playload: TransactionPlayLoad) => {
