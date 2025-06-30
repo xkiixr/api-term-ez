@@ -6,6 +6,7 @@ import {
   type DiscordWebhookPayload,
 } from "../utils/discord";
 import { encryptObject } from "../utils/encrypt";
+import { formatDate } from "../utils/formatter";
 
 export const createTransaction = async (
   playload: TransactionPlayLoad,
@@ -26,7 +27,7 @@ export const createTransaction = async (
         billNumber: callBack.billNumber,
         status: "success",
         message: "ເຕີມສຳເລັດ",
-        timeStamp: data._doc.createdAt,
+        timeStamp: formatDate(data._doc.createdAt),
       };
       await sendDiscordWebhook(message);
       return data;
@@ -44,7 +45,7 @@ export const createTransaction = async (
       billNumber: callBack.billNumber,
       status: "error",
       message: errMessage,
-      timeStamp: new Date().toISOString(),
+      timeStamp: formatDate(new Date().toISOString()),
     };
 
     await sendDiscordWebhook(message);
