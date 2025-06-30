@@ -1,16 +1,19 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+
+import createPaymentRoute from "./routes/payment.route";
 import productRoute from "./routes/product.route";
-import orderRoute from "./routes/orderRoute.route";
+import orderRoute from "./routes/order.route";
 import balanceRoute from "./routes/balance.route";
+import "./utils/encrypt";
 
 import initSocket from "./socket";
-import logger from "./middlewares/logger";
 import { limiter } from "./utils/limiter";
 import { createSocketServer } from "./socket/io";
 import { notFound } from "./middlewares/not-found";
-import createPaymentRoute from "./routes/payment.route";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const PORT = process.env.PORT || 3000;
@@ -36,5 +39,7 @@ app.use(errorHandler as express.ErrorRequestHandler);
 app.use(notFound);
 
 server.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT} with bun`);
+  console.log(
+    `🚀 Server running at http://localhost:${PORT} with bun \n call URL: https://api.term-ez.com/api/payment/callback`
+  );
 });

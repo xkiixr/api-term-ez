@@ -1,5 +1,6 @@
 export interface TransactionPlayLoad {
   selectPackage: string;
+  game?: { pack?: string; name?: string; price?: number };
   amount: number;
   payload: Payload[];
 }

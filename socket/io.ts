@@ -9,6 +9,7 @@ export const createSocketServer = (app: any) => {
       origin: corsOptions.origin,
       methods: ["GET", "POST"],
     },
+    transports: ["websocket", "polling"],
   });
   return { server, io };
 };

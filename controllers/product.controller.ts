@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from "express";
-import type { ApiResponse } from "../types/apiResponse";
 import * as productService from "../services/product.service";
 
 export const getAllProduct = async (

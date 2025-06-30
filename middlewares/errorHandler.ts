@@ -15,7 +15,7 @@ export function errorHandler(
       return res.status(err.response.status || 500).json({
         status: "fail",
         message: err.message,
-        error: err.response.data,
+        details: err.response.data,
       });
     } else if (err.request) {
       return res.status(500).json({
@@ -34,6 +34,6 @@ export function errorHandler(
   return res.status(500).json({
     status: "fail",
     message: "Internal Server Error",
-    error: err.message,
+    details: err.message || err,
   });
 }

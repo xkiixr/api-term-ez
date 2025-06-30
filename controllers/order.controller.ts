@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from "express";
-
 import * as orderService from "../services/order.service";
 
 export const getAllOrder = async (

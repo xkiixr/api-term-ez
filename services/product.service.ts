@@ -22,8 +22,6 @@ export const getProducts = async (id?: string) => {
     console.log("🟢 Fetched fresh", url);
     return data;
   } catch (error: any) {
-    throw new Error(
-      error.response?.data || error || "Failed to fetch products"
-    );
+    throw error.response?.data || error || "Failed to fetch products";
   }
 };

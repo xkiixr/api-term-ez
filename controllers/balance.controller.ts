@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-
 import * as userService from "../services/user.service";
+
 
 export const getAllBalance = async (
   req: Request,

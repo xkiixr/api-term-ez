@@ -1,7 +1,16 @@
 import axiosInstance from "../configs/axios.config";
+import type { GenerateQrPlayloadInterface } from "../types/payment.type";
 import type { TransactionPlayLoad } from "../types/transaction";
+import {
+  sendDiscordWebhook,
+  type DiscordWebhookPayload,
+} from "../utils/discord";
+import { encryptObject } from "../utils/encrypt";
 
-export const createTransaction = async (playload: TransactionPlayLoad) => {
+export const createTransaction = async (
+  playload: TransactionPlayLoad,
+  callBack: any
+) => {
   try {
     const url = `/topup`;
     const { data, status } = await axiosInstance.post(url, playload, {
@@ -9,11 +18,67 @@ export const createTransaction = async (playload: TransactionPlayLoad) => {
         "agent-token": process.env.PASSWORD!,
       },
     });
-    if (status === 200 || status === 201) return data;
-    else throw new Error("Create transaction failed");
+    if (status === 200 || status === 201) {
+      const message: DiscordWebhookPayload = {
+        game: playload.game,
+        playload: playload.payload,
+        txnRefId: callBack.txnRefId,
+        billNumber: callBack.billNumber,
+        status: "success",
+        message: "ເຕີມສຳເລັດ",
+        timeStamp: data._doc.createdAt,
+      };
+      await sendDiscordWebhook(message);
+      return data;
+    } else throw new Error("Create transaction failed");
   } catch (error: any) {
-    throw new Error(
-      error?.response?.data || error || "Create transaction failed"
+    const errMessage =
+      JSON.stringify(error?.response?.data) ||
+      error?.message ||
+      "Unknown error";
+
+    const message: DiscordWebhookPayload = {
+      game: playload.game,
+      playload: playload.payload,
+      txnRefId: callBack.txnRefId,
+      billNumber: callBack.billNumber,
+      status: "error",
+      message: errMessage,
+      timeStamp: new Date().toISOString(),
+    };
+
+    await sendDiscordWebhook(message);
+    throw new Error(errMessage);
+  }
+};
+export const generatePaymentQrcode = async (
+  playload: GenerateQrPlayloadInterface
+) => {
+  try {
+    const url = `/generate-proxy-payment`;
+    console.log({
+      ...playload,
+      callbackData: encryptObject(playload.callbackData),
+      callbackUrl: "https://api.term-ez.com/api/payment/callback",
+    });
+
+    const { data, status } = await axiosInstance.post(
+      url,
+
+      {
+        ...playload,
+        callbackData: encryptObject(playload.callbackData),
+        callbackUrl: "https://api.term-ez.com/api/payment/callback",
+      },
+      {
+        headers: {
+          "agent-token": process.env.PASSWORD!,
+        },
+      }
     );
+    if (status === 200 || status === 201) return data;
+    else throw new Error("generate qr failed");
+  } catch (error: any) {
+    throw error?.response?.data || error || "generate qr failed";
   }
 };
