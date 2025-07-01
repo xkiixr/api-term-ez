@@ -19,21 +19,21 @@ export function errorHandler(
       });
     } else if (err.request) {
       return res.status(500).json({
-        status: "fail",
+        status: "error",
         message: "No response received from external service",
         details: err.message,
       });
     }
     return res.status(500).json({
-      status: "fail",
+      status: "error",
       message: "Axios error occurred",
       details: err.message,
     });
   }
 
   return res.status(500).json({
-    status: "fail",
-    message: "Internal Server Error",
+    status: "error",
+    message: "An unexpected error occurred",
     details: err.message || err,
   });
 }

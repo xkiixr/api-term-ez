@@ -1,13 +1,17 @@
 import axiosInstance from "../configs/axios.config";
 
 export const getBalance = async (id?: string) => {
-  const url = `/get-balance`;
+  try {
+    const url = `/get-balance`;
 
-  const { data } = await axiosInstance.get(url, {
-    headers: {
-      "agent-token": process.env.PASSWORD!,
-    },
-  });
+    const { data } = await axiosInstance.get(url, {
+      headers: {
+        "agent-token": process.env.PASSWORD!,
+      },
+    });
 
-  return data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };

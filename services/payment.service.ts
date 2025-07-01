@@ -33,23 +33,17 @@ export const createTransaction = async (
       return data;
     } else throw new Error("Create transaction failed");
   } catch (error: any) {
-    const errMessage =
-      JSON.stringify(error?.response?.data) ||
-      error?.message ||
-      "Unknown error";
+    // const errMessage = error?.message || error || "Unknown error";
 
-    const message: DiscordWebhookPayload = {
-      game: playload.game,
-      playload: playload.payload,
-      txnRefId: callBack.txnRefId,
-      billNumber: callBack.billNumber,
-      status: "error",
-      message: errMessage,
-      timeStamp: formatDate(new Date().toISOString()),
-    };
+    // const message: DiscordWebhookPayload = {
+    //   status: "error",
+    //   message: errMessage,
+    //   timeStamp: formatDate(new Date().toISOString()),
+    // };
+    // console.log(message);
 
-    await sendDiscordWebhook(message);
-    throw new Error(errMessage);
+    // await sendDiscordWebhook(message);
+    throw error;
   }
 };
 export const generatePaymentQrcode = async (
@@ -57,11 +51,6 @@ export const generatePaymentQrcode = async (
 ) => {
   try {
     const url = `/generate-proxy-payment`;
-    console.log({
-      ...playload,
-      callbackData: encryptObject(playload.callbackData),
-      callbackUrl: "https://api.term-ez.com/api/payment/callback",
-    });
 
     const { data, status } = await axiosInstance.post(
       url,
@@ -80,6 +69,6 @@ export const generatePaymentQrcode = async (
     if (status === 200 || status === 201) return data;
     else throw new Error("generate qr failed");
   } catch (error: any) {
-    throw error?.response?.data || error || "generate qr failed";
+    throw error;
   }
 };
