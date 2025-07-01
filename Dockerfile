@@ -1,45 +1,21 @@
-# syntax = docker/dockerfile:1
+# Use an official Bun image
+FROM oven/bun:latest as builder
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.18.0
-FROM node:${NODE_VERSION}-slim AS base
-
-LABEL fly_launch_runtime="Node.js"
-
-# Node.js app lives here
+# Set working directory
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV="production"
+# Copy package.json and bun.lockb first to leverage Docker's build cache
+COPY package.json bun.lock ./
 
+# Install dependencies
+RUN bun install --frozen-lockfile --production
 
-# Throw-away build stage to reduce size of final image
-FROM base AS build
-
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
-
-# Install node modules
-COPY package-lock.json package.json ./
-RUN npm ci --include=dev
-
-# Copy application code
+# Copy the rest of your application code
 COPY . .
 
-# Build application
-RUN npm run build
-
-# Remove development dependencies
-RUN npm prune --omit=dev
-
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
+# Expose the port your app listens on (e.g., 3000 or 8080)
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+
+# Command to run your application
+# This assumes your package.json has "start": "bun run index.ts"
+CMD ["bun", "run", "start"]
