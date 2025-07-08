@@ -4,7 +4,7 @@ FROM oven/bun:1.1.13 as builder
 WORKDIR /app
 
 # Install deps first for caching
-COPY bun.lockb package.json ./
+COPY bun.lock package.json ./
 RUN bun install
 
 # Copy the rest of the code
