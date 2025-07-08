@@ -27,6 +27,24 @@ jobs:
             --exclude=node_modules \
             --exclude=.git \
             ./ root@174.138.17.127:/var/www/termez-api
+      - name: Create .env file on Droplet
+        run: |
+          ssh root@174.138.17.127 << EOF
+            cd /var/www/termez-api
+            cat > .env << EOL
+            NODE_ENV=production
+            API_TOP_UP_URL=${{ secrets.API_TOP_UP_URL }}
+            MONGO_URI=${{ secrets.MONGO_URI }}
+            CALLBACK_SECRET_KEY=${{ secrets.CALLBACK_SECRET_KEY }}
+            INDENTIFY=${{ secrets.INDENTIFY }}
+            PASSWORD=${{ secrets.PASSWORD }}
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            PUBNUB_SUBSCRIBE_KEY=${{ secrets.PUBNUB_SUBSCRIBE_KEY }}
+            PUBNUB_PUBLISH_KEY=${{ secrets.PUBNUB_PUBLISH_KEY }}
+            PUBNUB_SECRET_KEY=${{ secrets.PUBNUB_SECRET_KEY }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            EOL
+          EOF
 
       - name: Restart Project 1 Container
         run: |
