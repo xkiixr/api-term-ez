@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  termez_api:
+  api.term-ez.com:
     build: .
     container_name: termez-api
     networks:
