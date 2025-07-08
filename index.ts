@@ -18,7 +18,7 @@ import { notFound } from './middlewares/not-found';
 import { errorHandler } from './middlewares/errorHandler';
 import { formatDate } from './utils/formatter';
 // import connectDB from './configs/db';
-import { validateToken } from './middlewares/validateToken';
+// import { validateToken } from './middlewares/validateToken';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
