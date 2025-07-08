@@ -1,16 +1,18 @@
-# Stage 1: Build
+# Stage 1: Builder
 FROM oven/bun:1.1.13 as builder
 
 WORKDIR /app
 
-# Install deps first for caching
-COPY bun.lock package.json ./
+# Copy dependencies
+COPY bun.lockb package.json ./
+
+# Install dependencies
 RUN bun install
 
-# Copy the rest of the code
+# Copy app source
 COPY . .
 
-# Optional: run build if your app has a build step
+# Optional: Build step (uncomment if needed)
 # RUN bun run build
 
 # Stage 2: Production
@@ -18,9 +20,13 @@ FROM oven/bun:1.1.13
 
 WORKDIR /app
 
+# Copy app from builder
 COPY --from=builder /app /app
 
+# Expose the app port
 EXPOSE 3000
+
+# Start the app
 CMD ["bun", "start"]
 
 
