@@ -40,7 +40,7 @@ app.use('/api/payment', createPaymentRoute(io));
 
 app.get('/', (req, res) => {
   console.log(formatDate('123'));
-  res.send('Welcome to the TERM-EZ API Easy to use');
+  res.send('Welcome to the TERM-EZ API Easy');
 });
 app.use(errorHandler as express.ErrorRequestHandler);
 
