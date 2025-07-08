@@ -9,6 +9,8 @@ services:
     ports:
       - '3003:3000'
     restart: always # optional: ensures your app restarts on failure
+    env_file:
+      - .env
 
 networks:
   webnet:
