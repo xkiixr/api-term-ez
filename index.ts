@@ -40,7 +40,7 @@ app.use('/api/payment', createPaymentRoute(io));
 
 app.get('/', (req, res) => {
   console.log(formatDate('123'));
-  res.send('Welcome to the TERM-EZ API');
+  res.send('Welcome to the TERM-EZ API Easy to use');
 });
 app.use(errorHandler as express.ErrorRequestHandler);
 
@@ -48,6 +48,6 @@ app.use(notFound);
 
 server.listen(PORT, () => {
   console.log(
-    `🚀 Server running at http://localhost:${PORT} with bun \n call URL: https://api.term-ez.com/api/payment/callback`
+    `🚀 Server running at http://localhost:${PORT} with bun \n `
   );
 });
