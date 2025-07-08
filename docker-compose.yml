@@ -6,7 +6,7 @@ services:
     networks:
       - webnet
     ports:
-      - "80:3000"
+      - "8000:8000"
 networks:
   webnet:
     external: true
