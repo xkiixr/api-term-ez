@@ -1,0 +1,38 @@
+name: Deploy Project 1 to Droplet
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add known_hosts
+        run: ssh-keyscan -H 174.138.17.127 >> ~/.ssh/known_hosts
+
+      - name: Sync Project 1 to Droplet
+        run: |
+          rsync -az --delete \
+            --exclude=node_modules \
+            --exclude=.git \
+            ./ root@174.138.17.127:/var/www/termez-api
+
+      - name: Restart Project 1 Container
+        run: |
+          ssh root@174.138.17.127 << 'EOF'
+            cd /var/www/termez-api
+            docker-compose down
+            docker-compose build --no-cache
+            docker-compose up -d
+          EOF
