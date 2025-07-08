@@ -14,11 +14,11 @@ RUN bun install --frozen-lockfile --production
 COPY . .
 
 # Expose the port your app listens on (e.g., 3000 or 8080)
-EXPOSE 8080
+EXPOSE 8000
 
 # Command to run your application
 # This assumes your package.json has "start": "bun run index.ts"
-CMD ["bun", "run", "start"]
+CMD ["bun", "start"]
 
 # Stage 1: Build
 # FROM oven/bun:1.1.6
