@@ -1,24 +1,28 @@
-# Use an official Bun image
-FROM oven/bun:latest as builder
+# Stage 1: Build
+FROM oven/bun:1.1.13 as builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and bun.lockb first to leverage Docker's build cache
-COPY package.json bun.lock ./
+# Install deps first for caching
+COPY bun.lockb package.json ./
+RUN bun install
 
-# Install dependencies
-RUN bun install --frozen-lockfile --production
-
-# Copy the rest of your application code
+# Copy the rest of the code
 COPY . .
 
-# Expose the port your app listens on (e.g., 3000 or 8080)
-EXPOSE 8000
+# Optional: run build if your app has a build step
+# RUN bun run build
 
-# Command to run your application
-# This assumes your package.json has "start": "bun run index.ts"
+# Stage 2: Production
+FROM oven/bun:1.1.13-slim
+
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+EXPOSE 8000
 CMD ["bun", "start"]
+
 
 # Stage 1: Build
 # FROM oven/bun:1.1.6
