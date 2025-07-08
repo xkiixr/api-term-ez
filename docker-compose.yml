@@ -1,4 +1,5 @@
-version: "3.8"
+version: '3.8'
+
 services:
   termez_api:
     build: .
@@ -6,7 +7,9 @@ services:
     networks:
       - webnet
     ports:
-      - "8000:8000"
+      - '8001:8000'
+    restart: always # optional: ensures your app restarts on failure
+
 networks:
   webnet:
     external: true
