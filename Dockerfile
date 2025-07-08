@@ -14,7 +14,7 @@ COPY . .
 # RUN bun run build
 
 # Stage 2: Production
-FROM oven/bun:1.1.13-slim
+FROM oven/bun:1.1.13
 
 WORKDIR /app
 
