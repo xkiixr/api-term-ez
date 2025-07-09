@@ -26,11 +26,11 @@ jobs:
           rsync -az --delete \
             --exclude=node_modules \
             --exclude=.git \
-            ./ root@174.138.17.127:/var/www/termez-api
+            ./ root@174.138.17.127:/var/www/term-ez/backend-api
       - name: Create .env file on Droplet
         run: |
           ssh root@174.138.17.127 << EOF
-            cd /var/www/termez-api
+            cd /var/www/term-ez/backend-api
             cat > .env << EOL
             NODE_ENV=production
             API_TOP_UP_URL=${{ secrets.API_TOP_UP_URL }}
@@ -49,7 +49,7 @@ jobs:
       - name: Restart Project 1 Container
         run: |
           ssh root@174.138.17.127 << 'EOF'
-            cd /var/www/termez-api
+            cd /var/www/term-ez/backend-api
             docker-compose down
             docker-compose build --no-cache
             docker-compose up -d
