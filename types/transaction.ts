@@ -5,7 +5,7 @@ export interface TransactionPlayLoad {
   payload: Payload[];
 }
 
-interface Payload {
+export interface Payload {
   ref: string;
   value: string;
 }

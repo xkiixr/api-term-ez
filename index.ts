@@ -9,6 +9,7 @@ import productRoute from './routes/product.route';
 import orderRoute from './routes/order.route';
 import balanceRoute from './routes/balance.route';
 import authRoute from './routes/auth.route';
+import gameRoute from './routes/game.route';
 import './utils/encrypt';
 
 import initSocket from './socket';
@@ -35,6 +36,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/products', limiter, productRoute);
 app.use('/api/orders', orderRoute);
 app.use('/api/balance', balanceRoute);
+app.use('/api/game', gameRoute);
 app.use('/api/payment', createPaymentRoute(io));
 
 app.get('/', (req, res) => {

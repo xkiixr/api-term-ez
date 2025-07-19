@@ -24,10 +24,12 @@ export const createTransaction = async (
       const message: DiscordWebhookPayload = {
         game: playload.game,
         playload: playload.payload,
-        txnRefId: callBack.txnRefId,
-        billNumber: callBack.billNumber,
+        txnRefId: callBack.txnRefId || data.code,
+        billNumber: callBack.billNumber || data.billId,
         status: 'success',
         message: 'ເຕີມສຳເລັດ',
+        type: callBack.txnRefId ? 'QR' : 'Manual',
+        userName: data.nickname,
         timeStamp: formatDate(new Date().toISOString()),
       };
 

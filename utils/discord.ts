@@ -3,9 +3,11 @@ export interface DiscordWebhookPayload {
   game?: { pack?: string; name?: string; price?: number };
   txnRefId?: string;
   billNumber?: string;
-  status?: "success" | "error";
+  status?: 'success' | 'error';
   message?: string;
   timeStamp?: string;
+  userName?: string;
+  type: 'Manual' | 'QR';
 }
 export const sendDiscordWebhook = async ({
   game,
@@ -13,40 +15,48 @@ export const sendDiscordWebhook = async ({
   billNumber,
   status,
   message,
+  userName,
   timeStamp,
+  type,
 }: DiscordWebhookPayload) => {
   try {
     const response = await fetch(
-      "https://discord.com/api/webhooks/1386632162408665088/y87DuGLbN2B5tXIr51cvwF3rdDuayaDs89FUSFf1GNhca_Ol-jHJgThIH_UsDQlt4Qqd",
+      'https://discord.com/api/webhooks/1386632162408665088/y87DuGLbN2B5tXIr51cvwF3rdDuayaDs89FUSFf1GNhca_Ol-jHJgThIH_UsDQlt4Qqd',
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: "🔔 **New Payment Received!**",
+          content: '🔔 **New Payment Received!**',
           embeds: [
             {
               color: 0xffcc00,
-              title: "🧾 Transaction Details",
+              title: '🧾 Transaction Details',
               description: [
                 `• **Bill Number:** \`${billNumber}\``,
                 `• **Amount:** \`${game?.price} LAK\``,
                 `• **Time:** ${timeStamp}`,
                 `• **Game:** ${game?.name}`,
                 `• **Package:** \`${game?.pack}\``,
-              ].join("\n"),
+                `• **Type:** \`${type}\``,
+              ].join('\n'),
             },
             {
               color: 0x3498db,
-              title: "📨 Status",
+              title: '📨 Status',
               description: `\`${status}\``,
             },
             {
+              color: 0x3498db,
+              title: '🧑‍💼 User Name: ',
+              description: `\`${userName}\``,
+            },
+            {
               color: 0x2c3e50,
-              title: "🧩 Payload",
+              title: '🧩 Payload',
               description:
-                "```json\n" + JSON.stringify(playload || [], null, 2) + "\n```",
+                '```json\n' + JSON.stringify(playload || [], null, 2) + '\n```',
             },
           ],
         }),
@@ -54,12 +64,12 @@ export const sendDiscordWebhook = async ({
     );
 
     if (!response.ok) {
-      console.error("Failed to send Discord webhook:", await response.text());
+      console.error('Failed to send Discord webhook:', await response.text());
     } else {
-      console.log("✅ Webhook sent successfully");
+      console.log('✅ Webhook sent successfully');
     }
   } catch (error) {
-    console.error("❌ Error sending Discord webhook:", error);
+    console.error('❌ Error sending Discord webhook:', error);
   }
 };
 
@@ -79,7 +89,7 @@ export const formatWebhookMessage = ({
   serverId?: string;
   txnRefId?: string;
   billNumber?: string;
-  status: "success" | "error";
+  status: 'success' | 'error';
   message: string;
 }) => {
   return `>>>>>>>>ເຕີມເກມ<<<<<<<< 
